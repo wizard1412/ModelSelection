@@ -1,0 +1,86 @@
+\documentclass[a4paper,twocolumn]{article} % Document type
+
+\ifx\pdfoutput\undefined
+    %Use old Latex if PDFLatex does not work
+   \usepackage[dvips]{graphicx}% To get graphics working
+   \DeclareGraphicsExtensions{.eps} % Encapsulated PostScript
+ \else
+    %Use PDFLatex
+   \usepackage[pdftex]{graphicx}% To get graphics working
+   \DeclareGraphicsExtensions{.pdf,.jpg,.png,.mps} % Portable Document Format, Joint Photographic Experts Group, Portable Network Graphics, MetaPost
+   \pdfcompresslevel=9
+\fi
+
+\usepackage{amsmath,amssymb}   % Contains mathematical symbols
+\usepackage[ansinew]{inputenc} % Input encoding, identical to Windows 1252
+\usepackage[english]{babel}    % Language
+%\usepackage[round,authoryear]{natbib}  %Nice author (year) citations
+\usepackage[square,numbers]{natbib}     %Nice numbered citations
+%\bibliographystyle{unsrtnat}           %Unsorted bibliography
+\bibliographystyle{plainnat}            %Sorted bibliography
+
+\addtolength{\topmargin}{-30mm}% Removes 30mm from the top margin
+\addtolength{\textheight}{30mm}% Adds it to the text height
+
+
+\begin{document}               % Begins the document
+
+\title{Reproducing Sequential Attention for Feature Selection}
+\author{Gary Wang, Hank Lai \\ N16132087, N16131722 \\ n16132087@gs.ncku.edu.tw, n16131722@gs.ncku.edu.tw} 
+%\date{2010-10-10}             % If you want to set the date yourself.
+
+\maketitle                     % Generates the title
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Instructions regarding the report
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Introduction}
+% Introduce motivation, background on feature selection, and overview of SA
+
+\section{Problem Description}
+% Describe the feature selection task and the problem SA solves
+
+\section{Methods}
+\subsection{Sequential Attention Algorithm}
+% Description of algorithm, possibly Algorithm 1 from paper
+
+
+
+\subsection{Experimental Setup}
+% Dataset info, network architecture, optimizer, seeds, etc.
+
+\section{Results}
+\subsection{Dataset Overview}
+
+
+\subsection{Feature Selection Accuracy}
+% Accuracy table or plots for k=50 features
+
+
+\subsection{Statistical Validation}
+% t-test or p-value results table if needed
+
+\section{Discussion}
+% Analysis of differences, strengths, weaknesses, generalization, possible error sources
+
+\section{Conclusion}
+% Summary of what was reproduced and whether claims hold
+
+\section*{References}
+
+
+% Optionally include appendix
+\clearpage
+\appendix
+\section*{Appendix}
+\section{Hyperparameters}
+% Learning rate, batch size, etc.
+
+\section{Additional Figures}
+% Supplementary plots
+
+\end{document}      % End of the document
