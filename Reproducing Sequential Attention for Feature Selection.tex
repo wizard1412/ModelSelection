@@ -39,10 +39,23 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Introduction}
-% Introduce motivation, background on feature selection, and overview of SA
+
+Feature selection is essential for improving interpretability, generalization, and efficiency in high-dimensional learning tasks.
+ However, As noted in a review by Nordling (2013, Chapter 5.2) have noted, it remains a challenging problem due to 
+computational limits and sensitivity to noise. Classical methods such as LASSO and greedy search either fail to capture feature interactions or lack robustness.
+
+Sequential Attention (SA)~\cite{yasuda2023} proposes a novel attention-based relaxation of greedy selection that models conditional importance adaptively. 
+In this study, we aim to reproduce SA and evaluate whether it consistently outperforms classical methods 
+like Sequential LASSO and Group LASSO.
+
 
 \section{Problem Description}
-% Describe the feature selection task and the problem SA solves
+
+Given a dataset $X \in \mathbb{R}^{n \times d}$ and labels $y \in \mathbb{R}^n$, the goal of feature selection is to find a subset $S \subseteq \{1, ..., d\}$ of $k$ features that maximize the predictive performance of a model $f(X_S)$.
+
+Classical methods often ignore the marginal gain of features conditioned on already-selected features.
+ SA addresses this by learning attention scores in a sequential manner. We evaluate whether SA more effectively 
+identifies relevant subsets by comparing its classification accuracy and stability to that of Sequential LASSO and Group LASSO on benchmark datasets.
 
 \section{Methods}
 \subsection{Sequential Attention Algorithm}
@@ -70,7 +83,8 @@
 \section{Conclusion}
 % Summary of what was reproduced and whether claims hold
 
-\section*{References}
+\bibliographystyle{ieeetr}
+\bibliography{references}
 
 
 % Optionally include appendix
