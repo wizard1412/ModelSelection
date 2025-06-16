@@ -76,9 +76,18 @@ identifies relevant subsets by comparing its classification accuracy and stabili
 
 \subsection{Statistical Validation}
 % t-test or p-value results table if needed
+\subsection{VISUALIZATION OF SELECTED MNIST FEATURES}
+To select the seed whose selected feature distribution most closely resembles that shown in the original Figure 5, we computed both Intersection over Union (IoU) and Structural Similarity Index (SSIM) between our visualizations and those reported in the paper. IoU quantifies the overlap in selected features, while SSIM captures the perceptual similarity in structural patterns. Using both metrics allows us to evaluate the alignment from both a positional and visual perspective, and choose the seed with the most consistent spatial feature selection.
+
 
 \section{Discussion}
 % Analysis of differences, strengths, weaknesses, generalization, possible error sources
+\subsection{ Small-scale experiments}
+
+\subsection{ Large-scale experiments}
+We encountered difficulties reproducing the large-scale experiment presented in Figure 4 of the original paper. Specifically, the Criteo Click dataset used in that experiment requires approximately 1TB of disk space. 
+Due to hardware limitations on both our local machines and available servers, we were unable to process and store the full dataset. 
+As a result, we were not able to reproduce the large-scale results associated with this figure.
 
 \section{Conclusion}
 % Summary of what was reproduced and whether claims hold
