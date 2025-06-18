@@ -44,7 +44,7 @@ Feature selection is essential for improving interpretability, generalization, a
  However, As noted in a review by Nordling (2013, Chapter 5.2) have noted, it remains a challenging problem due to 
 computational limits and sensitivity to noise. Classical methods such as LASSO and greedy search either fail to capture feature interactions or lack robustness.
 
-Sequential Attention (SA)~\cite{yasuda2023} proposes a novel attention-based relaxation of greedy selection that models conditional importance adaptively. 
+Sequential Attention (SA) proposes a novel attention-based relaxation of greedy selection that models conditional importance adaptively. 
 In this study, we aim to reproduce SA and evaluate whether it consistently outperforms classical methods 
 like Sequential LASSO and Group LASSO.
 
@@ -68,6 +68,66 @@ identifies relevant subsets by comparing its classification accuracy and stabili
 
 \section{Results}
 \subsection{Dataset Overview}
+
+\begin{table*}[ht]
+\centering
+\resizebox{\textwidth}{!}{
+\begin{tabular}{lc|cc|cc}
+\hline
+\textbf{Dataset} & \textbf{Our results} & \textbf{Lemhadri (2021)~\cite{lemhadri2021lassonet}} & \textbf{p-value} & \textbf{Yasuda (2023)} & \textbf{p-value} \\
+\hline
+Mice Protein     & 0.989 $ \pm $ 0.008 & 0.990 & 0.7623 & 0.963 & 0.0017 \\
+MNIST            & 0.973 $ \pm $ 0.001 & 0.928 & 0.0000 & 0.953 & 0.0000 \\
+MNIST-Fashion    & 0.874 $ \pm $ 0.003 & 0.833 & 0.0000 & 0.869 & 0.0297 \\
+ISOLET           & 0.950 $ \pm $ 0.003 & 0.953 & 0.1269 & 0.961 & 0.0015 \\
+COIL-20          & 0.994 $ \pm $ 0.002 & 0.996 & 0.1381 & 0.986 & 0.0005 \\
+Activity         & 0.942 $ \pm $ 0.002 & 0.853 & 0.0000 & 0.954 & 0.0002 \\
+\hline
+\end{tabular}
+}
+\caption{Comparison of accuracy using all features. p-values are from one-sample t-tests against Lemhadri et al. and Yasuda et al.'s reported means.}
+\label{tab:all-feature-pval}
+\end{table*}
+
+\begin{table*}[ht]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lcccccc}
+\hline
+\textbf{Dataset} & \textbf{SA} & \textbf{LLY} & \textbf{GL} & \textbf{SL} & \textbf{OMP} & \textbf{CAE} \\
+\hline
+Mice Protein    & 0.993 $\pm$ 0.008 & 0.981 $\pm$ 0.005 & 0.985 $\pm$ 0.005 & 0.984 $\pm$ 0.008 & 0.994 $\pm$ 0.008 & 0.956 $\pm$ 0.012 \\
+MNIST           & 0.956 $\pm$ 0.002 & 0.944 $\pm$ 0.001 & 0.937 $\pm$ 0.003 & 0.959 $\pm$ 0.001 & 0.912 $\pm$ 0.004 & 0.909 $\pm$ 0.007 \\
+MNIST-Fashion   & 0.854 $\pm$ 0.003 & 0.843 $\pm$ 0.005 & 0.834 $\pm$ 0.004 & 0.854 $\pm$ 0.003 & 0.829 $\pm$ 0.008 & 0.839 $\pm$ 0.003 \\
+ISOLET          & 0.920 $\pm$ 0.006 & 0.866 $\pm$ 0.012 & 0.906 $\pm$ 0.006 & 0.920 $\pm$ 0.003 & 0.727 $\pm$ 0.026 & 0.893 $\pm$ 0.011 \\
+COIL-20         & 0.997 $\pm$ 0.001 & 0.994 $\pm$ 0.002 & 0.997 $\pm$ 0.004 & 0.988 $\pm$ 0.005 & 0.967 $\pm$ 0.014 & 0.972 $\pm$ 0.007 \\
+Activity        & 0.931 $\pm$ 0.004 & 0.897 $\pm$ 0.025 & 0.933 $\pm$ 0.002 & 0.931 $\pm$ 0.003 & 0.905 $\pm$ 0.013 & 0.921 $\pm$ 0.001 \\
+\hline
+\end{tabular}
+}
+\caption{Feature selection accuracy (mean $\pm$ std) on small-scale datasets}
+\label{tab:feature-selection}
+\end{table*}
+
+\begin{table*}[ht]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{l|c|c|c|c|c|c|c|c|c|c}
+\hline
+\textbf{Dataset} & \textbf{LLY} & \textbf{p-value} & \textbf{OMP} & \textbf{p-value} & \textbf{SA} & \textbf{p-value} & \textbf{GL} & \textbf{p-value} & \textbf{SL} & \textbf{p-value} \\
+\hline
+Mice Protein   & 0.982 $\pm$ 0.009 & 0.7567 & 0.994 $\pm$ 0.005 & 0.8998 & 0.994 $\pm$ 0.005 & 0.8915 & -         & -      & -         & -      \\
+MNIST          & 0.848 $\pm$ 0.026 & 0.0012 & 0.890 $\pm$ 0.016 & 0.0355 & 0.890 $\pm$ 0.016 & 0.0007 & 0.973 $\pm$ 0.001 & 0.0000 & 0.914 $\pm$ 0.005 & 0.0000 \\
+MNIST-Fashion  & 0.809 $\pm$ 0.011 & 0.0011 & 0.764 $\pm$ 0.029 & 0.0068 & 0.764 $\pm$ 0.029 & 0.0022 & 0.877 $\pm$ 0.005 & 0.0000 & 0.802 $\pm$ 0.008 & 0.0000 \\
+ISOLET         & 0.843 $\pm$ 0.017 & 0.0377 & 0.850 $\pm$ 0.018 & 0.0000 & 0.850 $\pm$ 0.018 & 0.0007 & -         & -      & -         & -      \\
+COIL-20        & 0.987 $\pm$ 0.005 & 0.0210 & 0.983 $\pm$ 0.008 & 0.0369 & 0.983 $\pm$ 0.008 & 0.0167 & 0.997 $\pm$ 0.003 & 0.9056 &-         & -      \\
+Activity       & 0.869 $\pm$ 0.053 & 0.3099 & 0.864 $\pm$ 0.034 & 0.0542 & 0.864 $\pm$ 0.034 & 0.0117 & -         & -      &-         & -      \\
+\hline
+\end{tabular}
+}
+\caption{Comparison of mean accuracy and p-values between methods and corresponding paper baselines across datasets.}
+\label{tab:method-comparison}
+\end{table*}
 
 
 \subsection{Feature Selection Accuracy}
