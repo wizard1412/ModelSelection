@@ -10,7 +10,7 @@
    \DeclareGraphicsExtensions{.pdf,.jpg,.png,.mps} % Portable Document Format, Joint Photographic Experts Group, Portable Network Graphics, MetaPost
    \pdfcompresslevel=9
 \fi
-
+\usepackage{subcaption}
 \usepackage{amsmath,amssymb}   % Contains mathematical symbols
 \usepackage[ansinew]{inputenc} % Input encoding, identical to Windows 1252
 \usepackage[english]{babel}    % Language
@@ -69,6 +69,72 @@ identifies relevant subsets by comparing its classification accuracy and stabili
 \section{Results}
 \subsection{Dataset Overview}
 
+\begin{figure*}[h!]
+    \centering
+
+    % === SA
+    \begin{subfigure}[t]{0.23\linewidth}
+        \includegraphics[width=\linewidth]{figures/reference_features_sa.png}
+        \caption*{SA Reference}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.23\linewidth}
+        \includegraphics[width=\linewidth]{figures/reference_features_gl.png}
+        \caption*{GL Reference}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.23\linewidth}
+        \includegraphics[width=\linewidth]{figures/reference_features_omp.png}
+        \caption*{OMP Reference}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.23\linewidth}
+        \includegraphics[width=\linewidth]{figures/reference_features_seql.png}
+        \caption*{SEQL Reference}
+    \end{subfigure}
+
+    \vspace{1em}
+
+    \begin{subfigure}[t]{0.23\linewidth}
+        \includegraphics[width=\linewidth]{figures/best_seed_sa.pdf}
+        \caption*{SA Best}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.23\linewidth}
+        \includegraphics[width=\linewidth]{figures/best_seed_gl.pdf}
+        \caption*{GL Best}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.23\linewidth}
+        \includegraphics[width=\linewidth]{figures/best_seed_omp.pdf}
+        \caption*{OMP Best}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.23\linewidth}
+        \includegraphics[width=\linewidth]{figures/best_seed_seql.pdf}
+        \caption*{SEQL Best}
+    \end{subfigure}
+
+    \caption{Top row: reference masks; bottom row: best-seed selection results for each method.}
+    \label{fig:feature_masks}
+\end{figure*}
+
+\begin{table}[ht]
+    \centering
+    \begin{tabular}{lcc}
+        \hline
+        \textbf{Method} & \textbf{Best Seed} & \textbf{SSIM} \\
+        \hline
+        SA    & 3 & 0.0992 \\
+        GL    & 5 & 0.3249 \\
+        OMP   & 1 & 0.1401 \\
+        SEQL  & 2 & 0.0874 \\
+        \hline
+    \end{tabular}
+    \caption{SSIM values for the best seed selected by each method.}
+    \label{tab:ssim_results}
+\end{table}
+
 \begin{table*}[ht]
 \centering
 \resizebox{\textwidth}{!}{
@@ -112,20 +178,20 @@ Activity        & 0.931 $\pm$ 0.004 & 0.897 $\pm$ 0.025 & 0.933 $\pm$ 0.002 & 0.
 \begin{table*}[ht]
 \centering
 \resizebox{\textwidth}{!}{%
-\begin{tabular}{l|c|c|c|c|c|c|c|c|c|c}
+\begin{tabular}{lcccccccccc}
 \hline
-\textbf{Dataset} & \textbf{LLY} & \textbf{p-value} & \textbf{OMP} & \textbf{p-value} & \textbf{SA} & \textbf{p-value} & \textbf{GL} & \textbf{p-value} & \textbf{SL} & \textbf{p-value} \\
+\textbf{Dataset} & \textbf{SA} & \textbf{p-value} & \textbf{LLY} & \textbf{p-value} & \textbf{GL} & \textbf{p-value} & \textbf{SL} & \textbf{p-value} & \textbf{OMP} & \textbf{p-value} \\
 \hline
-Mice Protein   & 0.982 $\pm$ 0.009 & 0.7567 & 0.994 $\pm$ 0.005 & 0.8998 & 0.994 $\pm$ 0.005 & 0.8915 & -         & -      & -         & -      \\
-MNIST          & 0.848 $\pm$ 0.026 & 0.0012 & 0.890 $\pm$ 0.016 & 0.0355 & 0.890 $\pm$ 0.016 & 0.0007 & 0.973 $\pm$ 0.001 & 0.0000 & 0.914 $\pm$ 0.005 & 0.0000 \\
-MNIST-Fashion  & 0.809 $\pm$ 0.011 & 0.0011 & 0.764 $\pm$ 0.029 & 0.0068 & 0.764 $\pm$ 0.029 & 0.0022 & 0.877 $\pm$ 0.005 & 0.0000 & 0.802 $\pm$ 0.008 & 0.0000 \\
-ISOLET         & 0.843 $\pm$ 0.017 & 0.0377 & 0.850 $\pm$ 0.018 & 0.0000 & 0.850 $\pm$ 0.018 & 0.0007 & -         & -      & -         & -      \\
-COIL-20        & 0.987 $\pm$ 0.005 & 0.0210 & 0.983 $\pm$ 0.008 & 0.0369 & 0.983 $\pm$ 0.008 & 0.0167 & 0.997 $\pm$ 0.003 & 0.9056 &-         & -      \\
-Activity       & 0.869 $\pm$ 0.053 & 0.3099 & 0.864 $\pm$ 0.034 & 0.0542 & 0.864 $\pm$ 0.034 & 0.0117 & -         & -      &-         & -      \\
+Mice Protein   & 0.994 $\pm$ 0.005 & 0.8915 & 0.982 $\pm$ 0.009 & 0.7567 & -              & -      & -              & -      & 0.994 $\pm$ 0.005 & 0.8998 \\
+MNIST          & 0.890 $\pm$ 0.016 & 0.0007 & 0.848 $\pm$ 0.026 & 0.0012 & 0.973 $\pm$ 0.001 & 0.0000 & 0.914 $\pm$ 0.005 & 0.0000 & 0.890 $\pm$ 0.016 & 0.0355 \\
+MNIST-Fashion  & 0.764 $\pm$ 0.029 & 0.0022 & 0.809 $\pm$ 0.011 & 0.0011 & 0.877 $\pm$ 0.005 & 0.0000 & 0.802 $\pm$ 0.008 & 0.0000 & 0.764 $\pm$ 0.029 & 0.0068 \\
+ISOLET         & 0.850 $\pm$ 0.018 & 0.0007 & 0.843 $\pm$ 0.017 & 0.0377 & -              & -      & -              & -      & 0.850 $\pm$ 0.018 & 0.0000 \\
+COIL-20        & 0.983 $\pm$ 0.008 & 0.0167 & 0.987 $\pm$ 0.005 & 0.0210 & 0.997 $\pm$ 0.003 & 0.9056 & -              & -      & 0.983 $\pm$ 0.008 & 0.0369 \\
+Activity       & 0.864 $\pm$ 0.034 & 0.0117 & 0.869 $\pm$ 0.053 & 0.3099 & -              & -      & -              & -      & 0.864 $\pm$ 0.034 & 0.0542 \\
 \hline
 \end{tabular}
 }
-\caption{Comparison of mean accuracy and p-values between methods and corresponding paper baselines across datasets.}
+\caption{Comparison of mean accuracy and p-values between methods and paper baselines across datasets. Method order follows original paper: SA, LLY, GL, SL, OMP.}
 \label{tab:method-comparison}
 \end{table*}
 
