@@ -49,30 +49,23 @@ In this study, we aim to reproduce SA and evaluate whether it consistently outpe
 like Sequential LASSO and Group LASSO.
 
 
-\section{Problem Description}
-
-Given a dataset $X \in \mathbb{R}^{n \times d}$ and labels $y \in \mathbb{R}^n$, the goal of feature selection is to find a subset $S \subseteq \{1, ..., d\}$ of $k$ features that maximize the predictive performance of a model $f(X_S)$.
-
-Classical methods often ignore the marginal gain of features conditioned on already-selected features.
- SA addresses this by learning attention scores in a sequential manner. We evaluate whether SA more effectively 
-identifies relevant subsets by comparing its classification accuracy and stability to that of Sequential LASSO and Group LASSO on benchmark datasets.
-
 \section{Methods}
-\subsection{Sequential Attention Algorithm}
+%\subsection{Sequential Attention Algorithm}
 % Description of algorithm, possibly Algorithm 1 from paper
-
-
 
 \subsection{Experimental Setup}
 % Dataset info, network architecture, optimizer, seeds, etc.
+In our experimental setup, we utilized the official GitHub repository provided by the original authors to reproduce Figure 3 from the paper. All hyperparameter settings(including model architecture, learning rate, batch size, number of epochs, and other configurations) were kept identical to those reported in the original paper to ensure reproducibility and fair comparison.
 
 \section{Results}
-\subsection{Dataset Overview}
+\subsection{ Small-scale experiments}
+Small-scale experiments evaluate feature selection methods on benchmark datasets using a simple neural network with 50 selected features.
+\subsubsection{Visuallization Of Selected MNIST Features}
+
+In Figure~\ref{fig:feature_masks}, we extracted reference feature maps from the original paper and converted them into binary masks. To select a representative reference mask for comparison, we computed the Structural Similarity Index (SSIM) between each reference candidate and our reproduced results, and chose the one with the highest SSIM as the basis for subsequent comparison.
 
 \begin{figure*}[h!]
     \centering
-
-    % === SA
     \begin{subfigure}[t]{0.23\linewidth}
         \includegraphics[width=\linewidth]{figures/reference_features_sa.png}
         \caption*{SA Reference}
@@ -123,7 +116,7 @@ identifies relevant subsets by comparing its classification accuracy and stabili
     \centering
     \begin{tabular}{lcc}
         \hline
-        \textbf{Method} & \textbf{Best Seed} & \textbf{SSIM} \\
+        \textbf{Method} & \textbf{Seed} & \textbf{SSIM} \\
         \hline
         SA    & 3 & 0.0992 \\
         GL    & 5 & 0.3249 \\
@@ -134,11 +127,36 @@ identifies relevant subsets by comparing its classification accuracy and stabili
     \caption{SSIM values for the best seed selected by each method.}
     \label{tab:ssim_results}
 \end{table}
+%\subsection{Dataset Overview}
+
+
+\subsubsection{Feature Selection Accuracy}
+% Accuracy table or plots for k=50 features
+\subsubsection{Statistical Validation}
+% t-test or p-value results table if needed
+\begin{table}[ht]
+\centering
+\scriptsize
+\begin{tabular}{lccccc}
+\hline
+\textbf{Dataset} & \textbf{SA} & \textbf{LLY} & \textbf{GL} & \textbf{SL} & \textbf{OMP} \\
+\hline
+Mice     & 0.9276 & 0.7567 & 0.0227 & 0.0673 & 0.5906 \\
+MNIST    & 0.0961 & 0.0012 & 0.0002 & 0.0000 & 0.0607 \\
+Fashion  & 0.0105 & 0.0011 & 0.0031 & 0.0007 & 0.0000 \\
+ISOLET   & 0.0551 & 0.0377 & 0.0003 & 0.3600 & 0.0037 \\
+COIL-20  & 0.3895 & 0.0210 & 0.0093 & 0.1437 & 0.3519 \\
+Activity & 0.7448 & 0.3099 & 0.7802 & 0.0034 & 0.2388 \\
+\hline
+\end{tabular}
+\caption{p-values comparing our reproduction results with paper baselines.}
+\label{tab:pvalue-comparison}
+\end{table}
 
 \begin{table*}[ht]
 \centering
 \resizebox{\textwidth}{!}{
-\begin{tabular}{lc|cc|cc}
+\begin{tabular}{lccccc}
 \hline
 \textbf{Dataset} & \textbf{Our results} & \textbf{Lemhadri (2021)~\cite{lemhadri2021lassonet}} & \textbf{p-value} & \textbf{Yasuda (2023)} & \textbf{p-value} \\
 \hline
@@ -162,53 +180,47 @@ Activity         & 0.942 $ \pm $ 0.002 & 0.853 & 0.0000 & 0.954 & 0.0002 \\
 \hline
 \textbf{Dataset} & \textbf{SA} & \textbf{LLY} & \textbf{GL} & \textbf{SL} & \textbf{OMP} & \textbf{CAE} \\
 \hline
-Mice Protein    & 0.993 $\pm$ 0.008 & 0.981 $\pm$ 0.005 & 0.985 $\pm$ 0.005 & 0.984 $\pm$ 0.008 & 0.994 $\pm$ 0.008 & 0.956 $\pm$ 0.012 \\
-MNIST           & 0.956 $\pm$ 0.002 & 0.944 $\pm$ 0.001 & 0.937 $\pm$ 0.003 & 0.959 $\pm$ 0.001 & 0.912 $\pm$ 0.004 & 0.909 $\pm$ 0.007 \\
-MNIST-Fashion   & 0.854 $\pm$ 0.003 & 0.843 $\pm$ 0.005 & 0.834 $\pm$ 0.004 & 0.854 $\pm$ 0.003 & 0.829 $\pm$ 0.008 & 0.839 $\pm$ 0.003 \\
-ISOLET          & 0.920 $\pm$ 0.006 & 0.866 $\pm$ 0.012 & 0.906 $\pm$ 0.006 & 0.920 $\pm$ 0.003 & 0.727 $\pm$ 0.026 & 0.893 $\pm$ 0.011 \\
-COIL-20         & 0.997 $\pm$ 0.001 & 0.994 $\pm$ 0.002 & 0.997 $\pm$ 0.004 & 0.988 $\pm$ 0.005 & 0.967 $\pm$ 0.014 & 0.972 $\pm$ 0.007 \\
-Activity        & 0.931 $\pm$ 0.004 & 0.897 $\pm$ 0.025 & 0.933 $\pm$ 0.002 & 0.931 $\pm$ 0.003 & 0.905 $\pm$ 0.013 & 0.921 $\pm$ 0.001 \\
+\textit{Paper} & 
+0.956 $\pm$ 0.002 & 0.944 $\pm$ 0.001 & 0.937 $\pm$ 0.003 & 0.959 $\pm$ 0.001 & 0.912 $\pm$ 0.004 & 0.909 $\pm$ 0.007 \\
+\textit{Ours} & 
+0.954 $\pm$ 0.001 & 0.848 $\pm$ 0.026 & 0.926 $\pm$ 0.003 & 0.952 $\pm$ 0.001 & 0.892 $\pm$ 0.018 & -- \\
+\hline
+\textit{Paper} & 
+0.854 $\pm$ 0.003 & 0.843 $\pm$ 0.005 & 0.834 $\pm$ 0.004 & 0.854 $\pm$ 0.003 & 0.829 $\pm$ 0.008 & 0.839 $\pm$ 0.003 \\
+\textit{Ours} & 
+0.846 $\pm$ 0.004 & 0.809 $\pm$ 0.011 & 0.842 $\pm$ 0.003 & 0.845 $\pm$ 0.003 & 0.768 $\pm$ 0.012 & -- \\
+\hline
+\textit{Paper} & 
+0.920 $\pm$ 0.006 & 0.866 $\pm$ 0.012 & 0.906 $\pm$ 0.006 & 0.920 $\pm$ 0.003 & 0.727 $\pm$ 0.026 & 0.893 $\pm$ 0.011 \\
+\textit{Ours} & 
+0.927 $\pm$ 0.005 & 0.843 $\pm$ 0.017 & 0.887 $\pm$ 0.005 & 0.923 $\pm$ 0.007 & 0.808 $\pm$ 0.035 & -- \\
+\hline
+\textit{Paper} & 
+0.997 $\pm$ 0.001 & 0.994 $\pm$ 0.002 & 0.997 $\pm$ 0.004 & 0.988 $\pm$ 0.005 & 0.967 $\pm$ 0.014 & 0.972 $\pm$ 0.007 \\
+\textit{Ours} & 
+0.994 $\pm$ 0.008 & 0.987 $\pm$ 0.005 & 0.991 $\pm$ 0.002 & 0.992 $\pm$ 0.005 & 0.976 $\pm$ 0.016 & -- \\
+\hline
+\textit{Paper} & 
+0.931 $\pm$ 0.004 & 0.897 $\pm$ 0.025 & 0.933 $\pm$ 0.002 & 0.931 $\pm$ 0.003 & 0.905 $\pm$ 0.013 & 0.921 $\pm$ 0.001 \\
+\textit{Ours} & 
+0.930 $\pm$ 0.003 & 0.869 $\pm$ 0.053 & 0.934 $\pm$ 0.008 & 0.917 $\pm$ 0.006 & 0.887 $\pm$ 0.029 & -- \\
+\hline
+\textit{Paper} & 
+0.993 $\pm$ 0.008 & 0.981 $\pm$ 0.005 & 0.985 $\pm$ 0.005 & 0.984 $\pm$ 0.008 & 0.994 $\pm$ 0.008 & 0.956 $\pm$ 0.012 \\
+\textit{Ours} & 
+0.993 $\pm$ 0.008 & 0.982 $\pm$ 0.009 & 0.994 $\pm$ 0.006 & 0.994 $\pm$ 0.008 & 0.992 $\pm$ 0.007 & -- \\
 \hline
 \end{tabular}
 }
-\caption{Feature selection accuracy (mean $\pm$ std) on small-scale datasets}
-\label{tab:feature-selection}
+\caption{Accuracy comparison: paper-reported (top) vs. reproduced results (bottom) across all datasets.}
+\label{tab:accuracy-ours-vs-paper}
 \end{table*}
 
-\begin{table*}[ht]
-\centering
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{lcccccccccc}
-\hline
-\textbf{Dataset} & \textbf{SA} & \textbf{p-value} & \textbf{LLY} & \textbf{p-value} & \textbf{GL} & \textbf{p-value} & \textbf{SL} & \textbf{p-value} & \textbf{OMP} & \textbf{p-value} \\
-\hline
-Mice Protein   & 0.994 $\pm$ 0.005 & 0.8915 & 0.982 $\pm$ 0.009 & 0.7567 & -              & -      & -              & -      & 0.994 $\pm$ 0.005 & 0.8998 \\
-MNIST          & 0.890 $\pm$ 0.016 & 0.0007 & 0.848 $\pm$ 0.026 & 0.0012 & 0.973 $\pm$ 0.001 & 0.0000 & 0.914 $\pm$ 0.005 & 0.0000 & 0.890 $\pm$ 0.016 & 0.0355 \\
-MNIST-Fashion  & 0.764 $\pm$ 0.029 & 0.0022 & 0.809 $\pm$ 0.011 & 0.0011 & 0.877 $\pm$ 0.005 & 0.0000 & 0.802 $\pm$ 0.008 & 0.0000 & 0.764 $\pm$ 0.029 & 0.0068 \\
-ISOLET         & 0.850 $\pm$ 0.018 & 0.0007 & 0.843 $\pm$ 0.017 & 0.0377 & -              & -      & -              & -      & 0.850 $\pm$ 0.018 & 0.0000 \\
-COIL-20        & 0.983 $\pm$ 0.008 & 0.0167 & 0.987 $\pm$ 0.005 & 0.0210 & 0.997 $\pm$ 0.003 & 0.9056 & -              & -      & 0.983 $\pm$ 0.008 & 0.0369 \\
-Activity       & 0.864 $\pm$ 0.034 & 0.0117 & 0.869 $\pm$ 0.053 & 0.3099 & -              & -      & -              & -      & 0.864 $\pm$ 0.034 & 0.0542 \\
-\hline
-\end{tabular}
-}
-\caption{Comparison of mean accuracy and p-values between methods and paper baselines across datasets. Method order follows original paper: SA, LLY, GL, SL, OMP.}
-\label{tab:method-comparison}
-\end{table*}
-
-
-\subsection{Feature Selection Accuracy}
-% Accuracy table or plots for k=50 features
-
-
-\subsection{Statistical Validation}
-% t-test or p-value results table if needed
-\subsection{VISUALIZATION OF SELECTED MNIST FEATURES}
-To select the seed whose selected feature distribution most closely resembles that shown in the original Figure 5, we computed both Intersection over Union (IoU) and Structural Similarity Index (SSIM) between our visualizations and those reported in the paper. IoU quantifies the overlap in selected features, while SSIM captures the perceptual similarity in structural patterns. Using both metrics allows us to evaluate the alignment from both a positional and visual perspective, and choose the seed with the most consistent spatial feature selection.
 
 
 \section{Discussion}
 % Analysis of differences, strengths, weaknesses, generalization, possible error sources
-\subsection{ Small-scale experiments}
+
 
 \subsection{ Large-scale experiments}
 We encountered difficulties reproducing the large-scale experiment presented in Figure 4 of the original paper. Specifically, the Criteo Click dataset used in that experiment requires approximately 1TB of disk space. 
