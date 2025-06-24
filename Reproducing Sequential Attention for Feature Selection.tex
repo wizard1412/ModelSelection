@@ -26,14 +26,15 @@
 
 \begin{document}               % Begins the document
 
-\title{Reproducing Sequential Attention for Feature Selection}
+\title{Reproducing: Sequential Attention for Feature Selection}
 \author{Gary Wang, Hank Lai \\ N16132087, N16132079 \\ n16132087@gs.ncku.edu.tw, n16132079@gs.ncku.edu.tw} 
+
 %\date{2010-10-10}             % If you want to set the date yourself.
 
 \maketitle                     % Generates the title
 
-
-
+\section{abstract}
+We reproduce several key feature selection methods evaluated in the original paper ``Sequential Attention for Feature Selection", including Sequential Attention (SA), LLY (Liao et al., 2021), Group LASSO (GL), Orthogonal Matching Pursuit (OMP), and the Concrete Autoencoder (CAE; Balin et al., 2019). During our experiments, we observe performance discrepancies across operating systems: while all methods work on both platforms, they tend to perform better on macOS compared to Windows. Despite these differences, our reproduced results closely match those reported in the original study, supporting the reliability of the proposed methods.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Instructions regarding the report
@@ -74,11 +75,12 @@ to test whether the difference in means is statistically significant. In both te
 
 \section{Results}
 Small-scale experiments evaluate feature selection methods on benchmark datasets using a simple neural network with 50 selected features.
-\subsection{Visuallization Of Selected MNIST Features}
+\subsection{Visuallization of Selected MNIST Features}
 
 As shown in Table~\ref{tab:dice_results}, we used the Dice coefficient to identify the most similar image. As illustrated in Figure~\ref{fig:feature_masks}, our results appear visually comparable to those of Yasuda (2023).; however, the Dice scores remain suboptimal (where values closer to 1 indicate higher similarity). Nevertheless, we consider the quantitative evaluation to be complete.
 \begin{table}[ht]
     \centering
+    \caption{Dice coefficients for the best seed selected by each method.}
     \begin{tabular}{lcc}
         \hline
         \textbf{Method} & \textbf{Seed} & \textbf{Dice} \\
@@ -90,7 +92,6 @@ As shown in Table~\ref{tab:dice_results}, we used the Dice coefficient to identi
         OMP   & 1 & 0.2600 \\
         \hline
     \end{tabular}
-    \caption{Dice coefficients for the best seed selected by each method.}
     \label{tab:dice_results}
 \end{table}
 \begin{figure*}[h!]
@@ -104,10 +105,11 @@ As shown in Table~\ref{tab:dice_results}, we used the Dice coefficient to identi
 \subsection{Statistical Validation}
 % t-test or p-value results table if needed
 \subsubsection*{With Feature Selection (Top 50 Features)}
-In Table~\ref{tab:methodwise-pval}, we observe that for certain method-dataset combinations, the $p$-value exceeds 0.5, suggesting no statistically significant difference—this supports the quantitative reproducibility of the results. On the other hand, even in cases where the $p$-value is below 0.5, the corresponding accuracies in Table~\ref{tab:accuracy-ours-vs-paper} remain very close to the original results. Therefore, we argue that our reproduction successfully achieves qualitative agreement with the original findings.
+In Table~\ref{tab:methodwise-pval}, we observe that for certain method-dataset combinations, the $p$-value exceeds 0.5, suggesting no statistically significant difference, and this supports the quantitative reproducibility of the results. On the other hand, even in cases where the $p$-value is below 0.5, the corresponding accuracies in Table~\ref{tab:accuracy-ours-vs-paper} remain very close to the original results. Therefore, we argue that our reproduction successfully achieves qualitative agreement with the original findings.
 \begin{table}[ht]
 \centering
 \scriptsize
+\caption{p-values comparing reproduced results with Yasuda (2023) for each method .}
 \begin{tabular}{lccccc}
 \hline
 \textbf{Dataset} & \textbf{SA} & \textbf{LLY} & \textbf{GL} & \textbf{SL} & \textbf{OMP} \\
@@ -120,12 +122,12 @@ COIL-20  & 0.3895 & \textbf{0.5901} & 0.0093 & 0.1437 & 0.3519 \\
 Activity & \textbf{0.7448} & 0.3194 & \textbf{0.7802} & 0.0034 & 0.2388 \\
 \hline
 \end{tabular}
-\caption{p-values comparing reproduced results with Yasuda (2023) for each method .}
 \label{tab:methodwise-pval}
 \end{table}
 
 \begin{table*}[ht]
 \centering
+\caption{Accuracy comparison: Yasuda (2023) vs. reproduced results across all datasets.}
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{llcccccc}
 \hline
@@ -169,12 +171,12 @@ Activity & \textbf{0.7448} & 0.3194 & \textbf{0.7802} & 0.0034 & 0.2388 \\
 \hline
 \end{tabular}
 }
-\caption{Accuracy comparison: Yasuda (2023) vs. reproduced results across all datasets.}
 \label{tab:accuracy-ours-vs-paper}
 \end{table*}
 
 \begin{table}[ht]
 \centering
+\caption{Comparison of accuracy using all features. p-values are from one-sample t-tests against Lemhadri (2021)~\cite{lemhadri2021lassonet} and Yasuda (2023)'s reported means.}
 \resizebox{\linewidth}{!}{%
 \begin{tabular}{lccccc}
 \hline
@@ -189,7 +191,6 @@ Activity         & 0.942 $ \pm $ 0.002 & 0.853 & 0.0000 & 0.954 & 0.0002 \\
 \hline
 \end{tabular}
 }
-\caption{Comparison of accuracy using all features. p-values are from one-sample t-tests against Lemhadri (2021)~\cite{lemhadri2021lassonet} and Yasuda (2023)'s reported means.}
 \label{tab:all-feature-pval}
 \end{table}
 \section{Discussion}
@@ -203,7 +204,11 @@ As a result, we were not able to reproduce the large-scale results associated wi
 
 \section{Conclusion}
 % Summary of what was reproduced and whether claims hold
+In this study, we reproduced key feature selection methods from the original Sequential Attention paper, including SA, LLY, Group LASSO, OMP, and Concrete Autoencoder. Experiments on six benchmark datasets showed that our results are largely consistent with the original findings. Minor discrepancies in accuracy were generally not statistically significant.
 
+We observed slight performance differences between operating systems, with macOS performing marginally better than Windows, although this did not affect the validity of the methods.
+
+Due to hardware constraints, the large-scale Criteo dataset experiments were not replicated. Nevertheless, our small-scale experiments strongly support the reproducibility and robustness of these methods, emphasizing the importance of system-level factors in reproducibility studies.
 \bibliographystyle{ieeetr}
 \bibliography{references}
 
