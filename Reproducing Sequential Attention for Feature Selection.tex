@@ -34,7 +34,7 @@
 \maketitle                     % Generates the title
 
 \section{abstract}
-We reproduce several key feature selection methods evaluated in the original paper ``Sequential Attention for Feature Selection", including Sequential Attention (SA), LLY (Liao et al., 2021), Group LASSO (GL), Orthogonal Matching Pursuit (OMP), and the Concrete Autoencoder (CAE; Balin et al., 2019). During our experiments, we observe performance discrepancies across operating systems: while all methods work on both platforms, they tend to perform better on macOS compared to Windows. Despite these differences, our reproduced results closely match those reported in the original study, supporting the reliability of the proposed methods.
+We reproduce several key feature selection methods evaluated in the original paper ``Sequential Attention for Feature Selection", including Sequential Attention (SA), LLY (Liao et al., 2021), Group LASSO (GL), Orthogonal Matching Pursuit (OMP), and the Concrete Autoencoder (CAE; Balin et al., 2019). While all methods work across platforms, we observe slightly better performance on macOS than on Windows. Overall, our results closely align with the original study, supporting the reliability of these methods.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Instructions regarding the report
@@ -190,11 +190,7 @@ We were unable to reproduce the large-scale experiment in Figure 4 due to hardwa
 
 \section{Conclusion}
 % Summary of what was reproduced and whether claims hold
-In this study, we reproduced key feature selection methods from the original Sequential Attention paper, including SA, LLY, Group LASSO, OMP, and Concrete Autoencoder. Experiments on six benchmark datasets showed that our results are largely consistent with the original findings. Minor discrepancies in accuracy were generally not statistically significant.
-
-We observed slight performance differences between operating systems, with macOS performing marginally better than Windows, although this did not affect the validity of the methods.
-
-Due to hardware constraints, the large-scale Criteo dataset experiments were not replicated. Nevertheless, our small-scale experiments strongly support the reproducibility and robustness of these methods, emphasizing the importance of system-level factors in reproducibility studies.
+We reproduced key feature selection methods from the Sequential Attention paper, with results on six datasets closely matching the original. Minor discrepancies were not statistically significant. While macOS performed slightly better than Windows, overall validity remained unaffected. Hardware limits prevented large-scale replication, but small-scale results confirmed method robustness.
 \bibliographystyle{ieeetr}
 \bibliography{references}
 
