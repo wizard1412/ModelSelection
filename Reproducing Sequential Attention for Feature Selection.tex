@@ -45,7 +45,7 @@ Feature selection is essential for improving interpretability, generalization, a
  However, As noted in a review by Nordling (2013, Chapter 5.2) have noted, it remains a challenging problem due to 
 computational limits and sensitivity to noise. Classical methods such as LASSO and greedy search either fail to capture feature interactions or lack robustness.
 
-Sequential Attention (SA) proposes a novel attention-based relaxation of greedy selection that models conditional importance adaptively. 
+Sequential Attention (SA)~\cite{yasuda2023} proposes a novel attention-based relaxation of greedy selection that models conditional importance adaptively. 
 In this study, we aim to reproduce SA and evaluate whether it consistently outperforms classical methods 
 like Sequential LASSO and Group LASSO.
 
@@ -67,56 +67,48 @@ In Figure~\ref{fig:feature_masks}, we extracted reference feature maps from the 
 
 \begin{figure*}[h!]
     \centering
+    % Top row: Reference
     \begin{subfigure}[t]{0.19\linewidth}
         \includegraphics[width=\linewidth]{figures/reference_features_sa.png}
-        \caption*{SA Reference}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}[t]{0.19\linewidth}
-        \includegraphics[width=\linewidth]{figures/reference_features_gl.png}
-        \caption*{GL Reference}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}[t]{0.19\linewidth}
-        \includegraphics[width=\linewidth]{figures/reference_features_omp.png}
-        \caption*{OMP Reference}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}[t]{0.19\linewidth}
-        \includegraphics[width=\linewidth]{figures/reference_features_seql.png}
-        \caption*{SEQL Reference}
     \end{subfigure}
     \hfill
     \begin{subfigure}[t]{0.19\linewidth}
         \includegraphics[width=\linewidth]{figures/reference_features_lly.png}
-        \caption*{LLY Reference}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.19\linewidth}
+        \includegraphics[width=\linewidth]{figures/reference_features_gl.png}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.19\linewidth}
+        \includegraphics[width=\linewidth]{figures/reference_features_seql.png}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.19\linewidth}
+        \includegraphics[width=\linewidth]{figures/reference_features_omp.png}
     \end{subfigure}
 
     \vspace{1em}
 
+    % Bottom row: Best Seeds
     \begin{subfigure}[t]{0.19\linewidth}
         \includegraphics[width=\linewidth]{figures/best_seed_sa.pdf}
-        \caption*{SA Best}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}[t]{0.19\linewidth}
-        \includegraphics[width=\linewidth]{figures/best_seed_gl.pdf}
-        \caption*{GL Best}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}[t]{0.19\linewidth}
-        \includegraphics[width=\linewidth]{figures/best_seed_omp.pdf}
-        \caption*{OMP Best}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}[t]{0.19\linewidth}
-        \includegraphics[width=\linewidth]{figures/best_seed_seql.pdf}
-        \caption*{SEQL Best}
     \end{subfigure}
     \hfill
     \begin{subfigure}[t]{0.19\linewidth}
         \includegraphics[width=\linewidth]{figures/best_seed_lly.pdf}
-        \caption*{LLY Best}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.19\linewidth}
+        \includegraphics[width=\linewidth]{figures/best_seed_gl.pdf}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.19\linewidth}
+        \includegraphics[width=\linewidth]{figures/best_seed_seql.pdf}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.19\linewidth}
+        \includegraphics[width=\linewidth]{figures/best_seed_omp.pdf}
     \end{subfigure}
 
     \caption{Top row: reference masks; bottom row: best-seed selection results for each method.}
