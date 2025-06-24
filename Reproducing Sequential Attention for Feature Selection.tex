@@ -54,13 +54,13 @@ like Sequential LASSO and Group LASSO.
 %\subsection{Sequential Attention Algorithm}
 % Description of algorithm, possibly Algorithm 1 from paper
 \subsection{Dice Coefficient}
-The Dice coefficient measures the similarity between two binary masks, commonly used to evaluate feature selection accuracy. It is defined as:
+The Dice coefficient measures the similarity between two binary masks. It is defined as:
 \begin{equation}
     \mathrm{Dice}(A, B) = \frac{2|A \cap B|}{|A| + |B|},
 \end{equation}
 where $A$ and $B$ are the sets of selected and reference features, respectively. A Dice score closer to 1 indicates higher overlap. In our study, we use it to select the best-performing seed for each method.
 \subsection{Statistical Testing (p-value).}
-To assess the statistical significance of performance differences, we compute p-values using $t$-tests. For comparing each method's accuracy against a known baseline (e.g., the paper-reported mean), we apply a one-sample $t$-test:
+To assess the statistical significance of performance differences, we conduct $t$-tests. For the model using all features , we apply a one-sample $t$-test to compare the accuracy against the reference value reported in the original paper. For the case with feature selection ($k=50$), we use a two-sample $t$-test to compare the accuracies of the selected and unselected feature models.
 \begin{equation}
     H_0: \mu = \mu_0,
 \end{equation}
@@ -103,12 +103,19 @@ As shown in Table~\ref{tab:dice_results}, we used the Dice coefficient to identi
 
 \subsection{Statistical Validation}
 % t-test or p-value results table if needed
+\subsubsection*{With Feature Selection (Top 50 Features)}
 \begin{table*}[ht]
 \centering
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{llcccccc}
 \hline
 \textbf{Dataset} &  & \textbf{SA} & \textbf{LLY} & \textbf{GL} & \textbf{SL} & \textbf{OMP} & \textbf{CAE} \\
+\hline
+\multirow{2}{*}{Mice Protein} &
+\textit{Yasuda (2023)} & 
+0.993 $\pm$ 0.008 & 0.981 $\pm$ 0.005 & 0.985 $\pm$ 0.005 & 0.984 $\pm$ 0.008 & 0.994 $\pm$ 0.008 & 0.956 $\pm$ 0.012 \\
+& \textit{Reproduced} & 
+0.993 $\pm$ 0.008 & 0.992 $\pm$ 0.007 & 0.994 $\pm$ 0.006 & 0.994 $\pm$ 0.008 & 0.992 $\pm$ 0.007 & -- \\
 \hline
 \multirow{2}{*}{MNIST} &
 \textit{Yasuda (2023)} & 
@@ -140,12 +147,6 @@ As shown in Table~\ref{tab:dice_results}, we used the Dice coefficient to identi
 & \textit{Reproduced} & 
 0.930 $\pm$ 0.003 & 0.908 $\pm$ 0.010 & 0.934 $\pm$ 0.008 & 0.917 $\pm$ 0.006 & 0.887 $\pm$ 0.029 & -- \\
 \hline
-\multirow{2}{*}{Mice Protein} &
-\textit{Yasuda (2023)} & 
-0.993 $\pm$ 0.008 & 0.981 $\pm$ 0.005 & 0.985 $\pm$ 0.005 & 0.984 $\pm$ 0.008 & 0.994 $\pm$ 0.008 & 0.956 $\pm$ 0.012 \\
-& \textit{Reproduced} & 
-0.993 $\pm$ 0.008 & 0.992 $\pm$ 0.007 & 0.994 $\pm$ 0.006 & 0.994 $\pm$ 0.008 & 0.992 $\pm$ 0.007 & -- \\
-\hline
 \end{tabular}
 }
 \caption{Accuracy comparison: Yasuda (2023) vs. reproduced results across all datasets.}
@@ -171,12 +172,13 @@ Activity & 0.7448 & 0.3194 & 0.7802 & 0.0034 & 0.2388 \\
 \label{tab:methodwise-pval}
 \end{table}
 
+\subsubsection*{Without Feature Selection (All Features)}
 \begin{table}[ht]
 \centering
 \resizebox{\linewidth}{!}{%
 \begin{tabular}{lccccc}
 \hline
-\textbf{Dataset} & \textbf{Our results} & \textbf{Lemhadri~\cite{lemhadri2021lassonet}} & \textbf{p-value} & \textbf{Yasuda} & \textbf{p-value} \\
+\textbf{Dataset} & \textbf{Our results} & \textbf{Lemhadri} & \textbf{p-value} & \textbf{Yasuda} & \textbf{p-value} \\
 \hline
 Mice Protein     & 0.989 $ \pm $ 0.008 & 0.990 & 0.7623 & 0.963 & 0.0017 \\
 MNIST            & 0.973 $ \pm $ 0.001 & 0.928 & 0.0000 & 0.953 & 0.0000 \\
@@ -187,10 +189,10 @@ Activity         & 0.942 $ \pm $ 0.002 & 0.853 & 0.0000 & 0.954 & 0.0002 \\
 \hline
 \end{tabular}
 }
-\caption{Comparison of accuracy using all features. p-values are from one-sample t-tests against Lemhadri (2021) and Yasuda (2023)'s reported means.}
+
+\caption{Comparison of accuracy using all features. p-values are from one-sample t-tests against Lemhadri (2021)~\cite{lemhadri2021lassonet} and Yasuda (2023)'s reported means.}
 \label{tab:all-feature-pval}
 \end{table}
-
 \section{Discussion}
 % Analysis of differences, strengths, weaknesses, generalization, possible error sources
 
