@@ -71,25 +71,7 @@ We assess significance using $t$-tests. A one-sample $t$-test checks if the full
     \label{tab:dice_results}
 \end{table}
 
-\begin{table}[ht]
-\centering
-\caption{Comparison of accuracy using all features. p-values are from one-sample t-tests against Lemhadri (2021)~\cite{lemhadri2021lassonet} and Yasuda (2023)'s reported means.}
-\resizebox{\linewidth}{!}{%
-\begin{tabular}{lccccc}
-\hline
-\textbf{Dataset} & \textbf{Our results} & \textbf{Lemhadri} & \textbf{p-value} & \textbf{Yasuda} & \textbf{p-value} \\
-\hline
-Mice Protein     & \textbf{0.989 $ \pm $ 0.008} & 0.990 & \textbf{0.7623} & 0.963 & 0.0017 \\
-MNIST            & 0.973 $ \pm $ 0.001 & 0.928 & 0.0000 & 0.953 & 0.0000 \\
-MNIST-Fashion    & 0.874 $ \pm $ 0.003 & 0.833 & 0.0000 & 0.869 & 0.0297 \\
-ISOLET           & 0.950 $ \pm $ 0.003 & 0.953 & 0.1269 & 0.961 & 0.0015 \\
-COIL-20          & 0.994 $ \pm $ 0.002 & 0.996 & 0.1381 & 0.986 & 0.0005 \\
-Activity         & 0.942 $ \pm $ 0.002 & 0.853 & 0.0000 & 0.954 & 0.0002 \\
-\hline
-\end{tabular}
-}
-\label{tab:all-feature-pval}
-\end{table}
+
 \begin{figure*}[h!]
     \centering
     \includegraphics[width=\textwidth]{figures/all_methods_with_axis.png}
@@ -153,7 +135,25 @@ Small-scale experiments evaluate feature selection methods on benchmark datasets
 As shown in Table~\ref{tab:dice_results}, we used the Dice coefficient to identify the most similar image. As illustrated in Figure~\ref{fig:feature_masks}, our results appear visually comparable to those of Yasuda (2023).; however, the Dice scores remain suboptimal (where values closer to 1 indicate higher similarity). Nevertheless, we consider the quantitative evaluation to be complete.
 
 
-%\subsection{Dataset Overview}
+\begin{table}[ht]
+\centering
+\caption{Comparison of accuracy using all features. p-values are from one-sample t-tests against Lemhadri (2021)~\cite{lemhadri2021lassonet} and Yasuda (2023)'s reported means.}
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{lccccc}
+\hline
+\textbf{Dataset} & \textbf{Our results} & \textbf{Lemhadri} & \textbf{p-value} & \textbf{Yasuda} & \textbf{p-value} \\
+\hline
+Mice Protein     & \textbf{0.989 $ \pm $ 0.008} & 0.990 & \textbf{0.7623} & 0.963 & 0.0017 \\
+MNIST            & 0.973 $ \pm $ 0.001 & 0.928 & 0.0000 & 0.953 & 0.0000 \\
+MNIST-Fashion    & 0.874 $ \pm $ 0.003 & 0.833 & 0.0000 & 0.869 & 0.0297 \\
+ISOLET           & 0.950 $ \pm $ 0.003 & 0.953 & 0.1269 & 0.961 & 0.0015 \\
+COIL-20          & 0.994 $ \pm $ 0.002 & 0.996 & 0.1381 & 0.986 & 0.0005 \\
+Activity         & 0.942 $ \pm $ 0.002 & 0.853 & 0.0000 & 0.954 & 0.0002 \\
+\hline
+\end{tabular}
+}
+\label{tab:all-feature-pval}
+\end{table}
 
 \subsection{Statistical Validation}
 % t-test or p-value results table if needed
@@ -178,6 +178,8 @@ Activity & \textbf{0.7448} & 0.3194 & \textbf{0.7802} & 0.0034 & 0.2388 \\
 \label{tab:methodwise-pval}
 \end{table}
 
+\subsubsection*{All Features (No Selection)}
+As shown in Table~\ref{tab:all-feature-pval}, only the Mice Protein dataset yields a high $p$-value. For other datasets, the differences are statistically significant, indicating a failure to fully reproduce the original results using all features.
 
 \section{Discussion}
 % Analysis of differences, strengths, weaknesses, generalization, possible error sources
@@ -196,15 +198,5 @@ Due to hardware constraints, the large-scale Criteo dataset experiments were not
 \bibliographystyle{ieeetr}
 \bibliography{references}
 
-
-% Optionally include appendix
-\clearpage
-\appendix
-\section*{Appendix}
-\section{Hyperparameters}
-% Learning rate, batch size, etc.
-
-\section{Additional Figures}
-% Supplementary plots
 
 \end{document}      % End of the document
