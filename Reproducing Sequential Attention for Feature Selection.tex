@@ -42,15 +42,7 @@ We reproduce several key feature selection methods evaluated in the original pap
 
 \section{Introduction}
 
-Feature selection is essential for improving interpretability, generalization, and efficiency in high-dimensional learning tasks.
- However, As noted in a review by Nordling (2013, Chapter 5.2) have noted, it remains a challenging problem due to 
-computational limits and sensitivity to noise. Classical methods such as LASSO and greedy search either fail to capture feature interactions or lack robustness.
-
-Sequential Attention (SA)~\cite{yasuda2023} proposes a novel attention-based relaxation of greedy selection that models conditional importance adaptively. 
-In this study, we aim to reproduce SA and evaluate whether it consistently outperforms classical methods 
-like Sequential LASSO and Group LASSO.
-
-
+Feature selection improves interpretability and efficiency in high-dimensional tasks but remains challenging due to noise and computational limits~\cite{nordling2013}. Sequential Attention (SA)~\cite{yasuda2023} addresses these issues by adaptively modeling feature importance. In this work, we focus on reproducing SA and comparing it with classical methods such as Sequential LASSO and Group LASSO.
 \section{Methods}
 %\subsection{Sequential Attention Algorithm}
 % Description of algorithm, possibly Algorithm 1 from paper
@@ -60,24 +52,8 @@ The Dice coefficient measures the similarity between two binary masks. It is def
     \mathrm{Dice}(A, B) = \frac{2|A \cap B|}{|A| + |B|},
 \end{equation}
 where $A$ and $B$ are the sets of selected and reference features, respectively. A Dice score closer to 1 indicates higher overlap. In our study, we use it to select the best-performing seed for each method.
-\subsection{Statistical Testing (p-value).}
-To assess the statistical significance of performance differences, we conduct $t$-tests. For the model using all features , we apply a one-sample $t$-test to compare the accuracy against the reference value reported in the original paper. For the case with feature selection ($k=50$), we use a two-sample $t$-test to compare the accuracies of the selected and unselected feature models.
-\begin{equation}
-    H_0: \mu = \mu_0,
-\end{equation}
-where $\mu$ is the sample mean from repeated trials, and $\mu_0$ is the reference mean.
-
-For comparing two methods directly, we use a two-sample $t$-test assuming equal variances:
-\begin{equation}
-    H_0: \mu_1 = \mu_2,
-\end{equation}
-to test whether the difference in means is statistically significant. In both tests, a low p-value (e.g., $< 0.05$) indicates that the observed difference is unlikely due to random chance.
-
-\section{Results}
-Small-scale experiments evaluate feature selection methods on benchmark datasets using a simple neural network with 50 selected features.
-\subsection{Visuallization of Selected MNIST Features}
-
-As shown in Table~\ref{tab:dice_results}, we used the Dice coefficient to identify the most similar image. As illustrated in Figure~\ref{fig:feature_masks}, our results appear visually comparable to those of Yasuda (2023).; however, the Dice scores remain suboptimal (where values closer to 1 indicate higher similarity). Nevertheless, we consider the quantitative evaluation to be complete.
+\subsection{Statistical Testing (p-value)}
+We assess significance using $t$-tests. A one-sample $t$-test checks if the full-feature model matches the paper's reported accuracy ($H_0!: \mu = \mu_0$), while a two-sample $t$-test compares models with selected vs. unselected features ($H_0!: \mu_1 = \mu_2$). A low p-value (e.g., $< 0.05$) suggests a significant difference.
 \begin{table}[ht]
     \centering
     \caption{Dice coefficients for the best seed selected by each method.}
@@ -94,36 +70,32 @@ As shown in Table~\ref{tab:dice_results}, we used the Dice coefficient to identi
     \end{tabular}
     \label{tab:dice_results}
 \end{table}
+
+\begin{table}[ht]
+\centering
+\caption{Comparison of accuracy using all features. p-values are from one-sample t-tests against Lemhadri (2021)~\cite{lemhadri2021lassonet} and Yasuda (2023)'s reported means.}
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{lccccc}
+\hline
+\textbf{Dataset} & \textbf{Our results} & \textbf{Lemhadri} & \textbf{p-value} & \textbf{Yasuda} & \textbf{p-value} \\
+\hline
+Mice Protein     & \textbf{0.989 $ \pm $ 0.008} & 0.990 & \textbf{0.7623} & 0.963 & 0.0017 \\
+MNIST            & 0.973 $ \pm $ 0.001 & 0.928 & 0.0000 & 0.953 & 0.0000 \\
+MNIST-Fashion    & 0.874 $ \pm $ 0.003 & 0.833 & 0.0000 & 0.869 & 0.0297 \\
+ISOLET           & 0.950 $ \pm $ 0.003 & 0.953 & 0.1269 & 0.961 & 0.0015 \\
+COIL-20          & 0.994 $ \pm $ 0.002 & 0.996 & 0.1381 & 0.986 & 0.0005 \\
+Activity         & 0.942 $ \pm $ 0.002 & 0.853 & 0.0000 & 0.954 & 0.0002 \\
+\hline
+\end{tabular}
+}
+\label{tab:all-feature-pval}
+\end{table}
 \begin{figure*}[h!]
     \centering
     \includegraphics[width=\textwidth]{figures/all_methods_with_axis.png}
     \caption{Top row: feature masks from Yasuda et al. (2023); bottom row: our reproduced result for each method. Axes denote feature indices.}
     \label{fig:feature_masks}
 \end{figure*}
-%\subsection{Dataset Overview}
-
-\subsection{Statistical Validation}
-% t-test or p-value results table if needed
-\subsubsection*{With Feature Selection (Top 50 Features)}
-In Table~\ref{tab:methodwise-pval}, we observe that for certain method-dataset combinations, the $p$-value exceeds 0.5, suggesting no statistically significant difference, and this supports the quantitative reproducibility of the results. On the other hand, even in cases where the $p$-value is below 0.5, the corresponding accuracies in Table~\ref{tab:accuracy-ours-vs-paper} remain very close to the original results. Therefore, we argue that our reproduction successfully achieves qualitative agreement with the original findings.
-\begin{table}[ht]
-\centering
-\scriptsize
-\caption{p-values comparing reproduced results with Yasuda (2023) for each method .}
-\begin{tabular}{lccccc}
-\hline
-\textbf{Dataset} & \textbf{SA} & \textbf{LLY} & \textbf{GL} & \textbf{SL} & \textbf{OMP} \\
-\hline
-Mice     & \textbf{0.9276} & 0.0220 & 0.0227 & 0.0673 & \textbf{0.5906} \\
-MNIST    & 0.0961 & 0.0013 & 0.0002 & 0.0000 & 0.0607 \\
-Fashion  & 0.0105 & \textbf{0.8313} & 0.0031 & 0.0007 & 0.0000 \\
-ISOLET   & 0.0551 & \textbf{0.6804} & 0.0003 & 0.3600 & 0.0037 \\
-COIL-20  & 0.3895 & \textbf{0.5901} & 0.0093 & 0.1437 & 0.3519 \\
-Activity & \textbf{0.7448} & 0.3194 & \textbf{0.7802} & 0.0034 & 0.2388 \\
-\hline
-\end{tabular}
-\label{tab:methodwise-pval}
-\end{table}
 
 \begin{table*}[ht]
 \centering
@@ -174,33 +146,45 @@ Activity & \textbf{0.7448} & 0.3194 & \textbf{0.7802} & 0.0034 & 0.2388 \\
 \label{tab:accuracy-ours-vs-paper}
 \end{table*}
 
+\section{Results}
+Small-scale experiments evaluate feature selection methods on benchmark datasets using a simple neural network with 50 selected features.
+\subsection{Visuallization of Selected MNIST Features}
+
+As shown in Table~\ref{tab:dice_results}, we used the Dice coefficient to identify the most similar image. As illustrated in Figure~\ref{fig:feature_masks}, our results appear visually comparable to those of Yasuda (2023).; however, the Dice scores remain suboptimal (where values closer to 1 indicate higher similarity). Nevertheless, we consider the quantitative evaluation to be complete.
+
+
+%\subsection{Dataset Overview}
+
+\subsection{Statistical Validation}
+% t-test or p-value results table if needed
+\subsubsection*{With Feature Selection (Top 50 Features)}
+Table~\ref{tab:methodwise-pval} shows that many $p$-values exceed 0.5, indicating no significant difference and supporting reproducibility. Even when $p$-values are lower, Table~\ref{tab:accuracy-ours-vs-paper} shows similar accuracies, confirming qualitative agreement.
 \begin{table}[ht]
 \centering
-\caption{Comparison of accuracy using all features. p-values are from one-sample t-tests against Lemhadri (2021)~\cite{lemhadri2021lassonet} and Yasuda (2023)'s reported means.}
-\resizebox{\linewidth}{!}{%
+\scriptsize
+\caption{p-values comparing reproduced results with Yasuda (2023) for each method .}
 \begin{tabular}{lccccc}
 \hline
-\textbf{Dataset} & \textbf{Our results} & \textbf{Lemhadri} & \textbf{p-value} & \textbf{Yasuda} & \textbf{p-value} \\
+\textbf{Dataset} & \textbf{SA} & \textbf{LLY} & \textbf{GL} & \textbf{SL} & \textbf{OMP} \\
 \hline
-Mice Protein     & \textbf{0.989 $ \pm $ 0.008} & 0.990 & \textbf{0.7623} & 0.963 & 0.0017 \\
-MNIST            & 0.973 $ \pm $ 0.001 & 0.928 & 0.0000 & 0.953 & 0.0000 \\
-MNIST-Fashion    & 0.874 $ \pm $ 0.003 & 0.833 & 0.0000 & 0.869 & 0.0297 \\
-ISOLET           & 0.950 $ \pm $ 0.003 & 0.953 & 0.1269 & 0.961 & 0.0015 \\
-COIL-20          & 0.994 $ \pm $ 0.002 & 0.996 & 0.1381 & 0.986 & 0.0005 \\
-Activity         & 0.942 $ \pm $ 0.002 & 0.853 & 0.0000 & 0.954 & 0.0002 \\
+Mice     & \textbf{0.9276} & 0.0220 & 0.0227 & 0.0673 & \textbf{0.5906} \\
+MNIST    & 0.0961 & 0.0013 & 0.0002 & 0.0000 & 0.0607 \\
+Fashion  & 0.0105 & \textbf{0.8313} & 0.0031 & 0.0007 & 0.0000 \\
+ISOLET   & 0.0551 & \textbf{0.6804} & 0.0003 & 0.3600 & 0.0037 \\
+COIL-20  & 0.3895 & \textbf{0.5901} & 0.0093 & 0.1437 & 0.3519 \\
+Activity & \textbf{0.7448} & 0.3194 & \textbf{0.7802} & 0.0034 & 0.2388 \\
 \hline
 \end{tabular}
-}
-\label{tab:all-feature-pval}
+\label{tab:methodwise-pval}
 \end{table}
+
+
 \section{Discussion}
 % Analysis of differences, strengths, weaknesses, generalization, possible error sources
 
 
 \subsection{ Large-scale experiments}
-We encountered difficulties reproducing the large-scale experiment presented in Figure 4 of the original paper. Specifically, the Criteo Click dataset used in that experiment requires approximately 1TB of disk space. 
-Due to hardware limitations on both our local machines and available servers, we were unable to process and store the full dataset. 
-As a result, we were not able to reproduce the large-scale results associated with this figure.
+We were unable to reproduce the large-scale experiment in Figure 4 due to hardware limits, as the Criteo dataset requires ~1TB of storage, exceeding our available capacity.
 
 \section{Conclusion}
 % Summary of what was reproduced and whether claims hold
